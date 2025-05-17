@@ -1,7 +1,7 @@
 console.log("Script loaded successfully");
 
 // const firebaseConfig = {
-//     apiKey: "AIzaSyDU7yglucYCMDV6wSUr2t8DpPacpW-iEuU",
+//     apiKey: "your-key",
 //     authDomain: "aptimize-aptitude-app.firebaseapp.com",
 //     projectId: "aptimize-aptitude-app",
 //     storageBucket: "aptimize-aptitude-app.appspot.com",
