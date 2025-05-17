@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - AptiMize</title>
+    <link rel="stylesheet" href="category.css">
+    <style>
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+        .floating-circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: -50px;
+            left: 10%;
+            animation: float 15s infinite ease-in-out;
+        }
+        .floating-circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: -30px;
+            right: 15%;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+        .floating-circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 40%;
+            left: 25%;
+            animation: float 10s infinite ease-in-out 2s;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        .about-content h2 {
+            color: var(--primary);
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .about-content h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+        }
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            font-size: 1.05rem;
+        }
+        .about-content strong {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        .card {
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        .card-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .card-icon {
+            background-color: rgba(37, 99, 235, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        .card h3 {
+            color: var(--text);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .feature-list {
+            list-style-type: none;
+            margin: 1.5rem 0;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .feature-icon {
+            color: var(--accent);
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 0.3rem;
+        }
+        .feature-text {
+            color: var(--text);
+        }
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        .cta-section h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+        .image-container {
+            position: relative;
+        }
+        .app-image {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        .image-decoration {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        .image-decoration:nth-child(1) {
+            top: -30px;
+            left: -30px;
+        }
+        .image-decoration:nth-child(2) {
+            bottom: -20px;
+            right: -20px;
+        }
+        footer {
+            background-color: #1f2937;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        footer p {  opacity: 0.8;}
+        @media (max-width: 768px) {
+            .about-grid {grid-template-columns: 1fr; }
+            .navbar {  padding: 0 1rem; }
+            .nav-menu {  display: none;}
+            .hero { padding: 3rem 0 2rem;}
+            .hero h1 {font-size: 2rem;}
+            .image-container {
+                margin-top: 2rem;
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <h1>About AptiMize</h1>
+        <p>Learn aptitude the fun way with our gamified learning platform</p>
+    </section>
+    
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-content">
+                <h2>Our Mission</h2>
+                <p><strong>Where the idea began:</strong> AptiMize was created to transform the traditionally boring task of aptitude learning into an engaging, fun, and gamified experience. Inspired by successful educational apps like Duolingo, we've designed a platform that makes learning addictive and enjoyable.</p>
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">📱</div>
+                        <h3>How to Use AptiMize</h3>
+                    </div>
+                    <p>Getting started is easy! Log in using Google, select a topic like Bar Graphs or Time & Work, and begin your practice journey. As you progress, you'll earn streaks, points, and rewards to keep you motivated.</p>
+                </div>
+            </div>
+            <div class="image-container">
+                <div class="image-decoration"></div>
+                <div class="image-decoration"></div>
+                <img src="image.jpeg" alt="AptiMize App Interface" class="app-image">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">✨</div>
+                <h3>Key Features</h3>
+            </div>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span class="feature-text"><strong>Interactive Quizzes:</strong> Engaging questions with visual charts and diagrams that make learning intuitive.</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span class="feature-text"><strong>Achievement System:</strong> Keep motivated with streaks, levels, and rewards as you progress through topics.</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span class="feature-text"><strong>Smart Tracking:</strong> Performance tracking and adaptive difficulty that grows with your skills.</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span class="feature-text"><strong>Social Learning:</strong> Compete with friends on the leaderboard and share your achievements.</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span class="feature-text"><strong>Daily Rewards:</strong> Enjoy surprise rewards and streak poppers when you log in daily!</span>
+                </li>
+            </ul>
+        </div>
+        <div class="cta-section">
+            <h3>Ready to transform your aptitude learning?</h3>
+            <p>Join thousands of students who have made learning fun and effective with AptiMize.</p>
+            <a href="index.html" class="cta-button">Get Started Now</a>
+            <p>Have feedback or suggestions? <a href="contact.html" style="color: var(--primary); text-decoration: underline;">Contact us here</a></p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 AptiMize. All rights reserved.</p>
+    </footer>
+</body>
+</html>

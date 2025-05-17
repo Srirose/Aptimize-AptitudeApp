@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reasoning Quiz - AptiMize</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="quizstyles.css">
+
+</head>
+<body>
+    <div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Logical Reasoning</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 AptiMize - All Rights Reserved
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let startTime = Date.now();
+
+        const questions = [
+          { question: "1) Find the missing number: 2, 6, 12, 20, __?", options: ["26", "30", "32", "36"], answer: "30", explanation: "The differences are +4, +6, +8... next is +10. 20+10=30." },
+          { question: "2) What comes next? A, C, E, G, __?", options: ["H", "I", "J", "K"], answer: "I", explanation: "Each letter skips 1 alphabet: A(+2)=C, C(+2)=E... G(+2)=I." },
+          { question: "3) Apple : Fruit :: Rose : __?", options: ["Tree", "Flower", "Leaf", "Vegetable"], answer: "Flower", explanation: "Apple is a type of fruit, Rose is a type of flower." },
+          { question: "4) Book : Pages :: Chair : __?", options: ["Wood", "Legs", "Sit", "Furniture"], answer: "Legs", explanation: "Pages are part of a book, legs are part of a chair." },
+          { question: "5) A is the father of B. B is the mother of C. How is A related to C?", options: ["Uncle", "Father", "Grandfather", "Brother"], answer: "Grandfather", explanation: "A is B's father and B is C's mother. So A is C's grandfather." },
+          { question: "6) Pointing to a girl, Aman said, 'She is the daughter of my father\'s only daughter'. Who is the girl?", options: ["Aman's Daughter", "Aman's Sister", "Aman's Niece", "Aman's Mother"], answer: "Aman's Daughter", explanation: "Aman's father's only daughter is Aman's sister. So the girl is his daughter." },
+          { question: "7) If 'APPLE' is coded as 'ELPPA', how is 'WORLD' coded?", options: ["DLROW", "DLOWR", "WORDL", "WOLDR"], answer: "DLROW", explanation: "'APPLE' reversed is 'ELPPA'. Reverse 'WORLD' = DLROW." },
+          { question: "8) If 'SUN' is written as 'TVP', how is 'MOON' written?", options: ["NQQP", "NPPQ", "OPQR", "NQPP"], answer: "NQPP", explanation: "Each letter is incremented by 1: S→T, U→V, N→P. Similarly, M→N, O→Q, O→P, N→P." },
+          { question: "9) A person walks 5 km North, then 3 km East, then 2 km South. How far is he from the starting point?", options: ["4 km", "5 km", "6 km", "7 km"], answer: "5 km", explanation: "Final position is 3 km East and 3 km North. Distance = √(3² + 3²) = √18 ≈ 4.24 km ≈ 5 km." },
+          { question: "10) Raj is facing South. He turns 90° clockwise, then 180° counterclockwise. Which direction is he facing now?", options: ["East", "West", "North", "South"], answer: "East", explanation: "South → Clockwise 90° = West → Counterclockwise 180° = East." },
+          { question: "11) What comes next? 3, 9, 27, 81, __?", options: ["162", "243", "324", "450"], answer: "243", explanation: "Each number is multiplied by 3. 81 × 3 = 243." },
+          { question: "12) If DOG = 4157, then CAT = __?", options: ["3142", "3152", "3145", "3257"], answer: "3142", explanation: "D=4, O=15, G=7 → C=3, A=1, T=20 = 3142." },
+          { question: "13) If all cats are animals and some animals are wild, which of the following is true?", options: ["All cats are wild", "Some cats are wild", "All animals are cats", "None of these"], answer: "None of these", explanation: "Some animals are wild doesn't mean any cat is wild." },
+          { question: "14) If 'Pen' is related to 'Write', then 'Knife' is related to?", options: ["Cut", "Paint", "Break", "Eat"], answer: "Cut", explanation: "Pen is used to write, knife is used to cut." },
+          { question: "15) Arrange logically: 1. Seed, 2. Tree, 3. Fruit, 4. Plant", options: ["1, 2, 3, 4", "1, 4, 2, 3", "1, 3, 2, 4", "4, 1, 2, 3"], answer: "1, 4, 2, 3", explanation: "Seed grows into plant, then tree, which gives fruit." },
+          { question: "16) Find the odd one: Apple, Mango, Carrot, Banana", options: ["Apple", "Mango", "Carrot", "Banana"], answer: "Carrot", explanation: "Carrot is a vegetable, others are fruits." },
+          { question: "17) Find the odd one: 2, 4, 8, 9, 16", options: ["2", "4", "8", "9"], answer: "9", explanation: "All are powers of 2 except 9." },
+          { question: "18) A is older than B, B is older than C. Who is the youngest?", options: ["A", "B", "C", "Cannot be determined"], answer: "C", explanation: "A > B > C, so C is the youngest." },
+          { question: "19) If 2 + 3 = 10, 3 + 4 = 20, then 4 + 5 = ?", options: ["30", "25", "40", "45"], answer: "40", explanation: "Pattern: (a + b) × 2 = result. This is a puzzle-style question." },
+          { question: "20) If 1 = 3, 2 = 6, 3 = 9, then 4 = ?", options: ["12", "15", "8", "16"], answer: "12", explanation: "Multiply the number by 3 → 4 × 3 = 12." }
+        ];
+
+        function loadQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                let q = questions[currentQuestionIndex];
+                document.getElementById("question-text").textContent = q.question;
+
+                let optionsHtml = '';
+                q.options.forEach(opt => {
+                    const safeOpt = opt.replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '\\"');
+                    const safeAnswer = q.answer.replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '\\"');
+                    const safeExplanation = q.explanation.replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '\\"');
+                    
+                    optionsHtml += `<button onclick="checkAnswer('${safeOpt}', '${safeAnswer}', \`${safeExplanation}\`)">${opt}</button>`;
+                });
+
+                document.getElementById("options").innerHTML = optionsHtml;
+                document.getElementById("submit-btn").style.display = "none";
+                document.getElementById("next-btn").style.display = "none";
+                document.getElementById("explanation").style.display = "none";
+            } else {
+                document.getElementById("submit-btn").style.display = "block";
+                document.getElementById("next-btn").style.display = "none";
+            }
+        }
+
+        function checkAnswer(selected, correct, explanation) {
+            let buttons = document.querySelectorAll("#options button");
+
+            buttons.forEach(button => {
+                if (button.textContent === correct) {
+                    button.classList.add("correct");
+                }
+                if (button.textContent === selected && selected !== correct) {
+                    button.classList.add("wrong");
+                }
+                button.disabled = true;
+            });
+
+            if (selected === correct) {
+                score++;
+            }
+
+            document.getElementById("explanation-text").textContent = explanation;
+            document.getElementById("explanation").style.display = "block";
+            document.getElementById("next-btn").style.display = "block";
+        }
+
+        function nextQuestion() {
+            let buttons = document.querySelectorAll("#options button");
+            buttons.forEach(button => {
+                button.classList.remove("correct", "wrong");
+                button.disabled = false;
+            });
+            
+            document.getElementById("explanation").style.display = "none";
+            document.getElementById("next-btn").style.display = "none";
+            
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function getQuizTopic() {
+            return "reasoning";
+        }
+
+        function submitQuiz() {
+            let timeTaken = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById("score").style.display = "block";
+            document.getElementById("time").style.display = "block";
+            document.getElementById("score-value").textContent = score;
+            document.getElementById("time-value").textContent = timeTaken;
+            
+            let userScores = JSON.parse(localStorage.getItem("userScores")) || {};
+            userScores["reasoning"] = score;
+            localStorage.setItem("userScores", JSON.stringify(userScores));
+            
+            console.log(`Score ${score} saved for topic: reasoning`);
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

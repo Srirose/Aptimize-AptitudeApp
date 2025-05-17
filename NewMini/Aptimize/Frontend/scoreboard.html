@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Aptimize</title>
+    <link rel="stylesheet" href="score.css"> 
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Your Performance Dashboard</h1>
+            <p class="subtitle">Track your progress across different aptitude topics</p>
+        </div>
+        <div class="score-container">
+            <div class="score-title">
+                <span>📊</span>
+                <h2>SCORE BOARD</h2>
+            </div>
+            <ul id="scoreList" class="score-list"></ul>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <p>You haven't completed any quizzes yet.</p>
+                <p>Start learning and taking quizzes to see your scores here!</p>
+            </div>
+        </div>
+        <div class="footer-actions">
+            <a href="home.html" class="back-btn">🏠 Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let scores = JSON.parse(localStorage.getItem("userScores")) || {};
+            console.log("Loaded scores:", scores);
+            let scoreList = document.getElementById("scoreList");
+            let emptyState = document.getElementById("emptyState");
+            scoreList.innerHTML = "";
+            if (Object.keys(scores).length === 0) {
+                emptyState.style.display = "block";
+            } else {
+                emptyState.style.display = "none";
+                const sortedTopics = Object.keys(scores).sort();
+                for (let topic of sortedTopics) {
+                    let listItem = document.createElement("li");
+                    listItem.className = "score-item";
+                    let topicSpan = document.createElement("span");
+                    topicSpan.className = "score-topic";
+                    topicSpan.textContent = formatTopicName(topic);
+                    let scoreSpan = document.createElement("span");
+                    scoreSpan.className = "score-value";
+                    scoreSpan.textContent = `${scores[topic]} / 20`;
+                    listItem.appendChild(topicSpan);
+                    listItem.appendChild(scoreSpan);
+                    scoreList.appendChild(listItem);
+                }
+            }
+            function formatTopicName(topic) {
+                if (topic === "profit-loss") return "Profit & Loss";
+                if (topic === "time-work") return "Time & Work";
+                if (topic === "train") return "Train Problems";
+                return topic
+                    .split("-")
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllogism Quiz - AptiMize</title>
+       <link rel="stylesheet" href="quizstyles.css"> 
+    <script src="questions.js" defer></script> 
+    
+</head>
+<body>
+<div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Train Problems</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+
+<script>
+let currentQuestionIndex = 0;
+let score = 0;
+let startTime = Date.now();
+
+let questions = [
+    {
+        question: "1) Statements: All dogs are cats. Some cats are lions. Conclusion: I. Some dogs are lions. II. Some lions are dogs.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Neither I nor II follow",
+        explanation: "No direct connection between dogs and lions is established, so neither conclusion follows."
+    },
+    {
+        question: "2) Statements: All apples are mangoes. No mango is banana. Conclusion: I. No apple is banana. II. Some bananas are apples.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Since all apples are mangoes and no mango is a banana, apples cannot be bananas."
+    },
+    {
+        question: "3) Statements: Some books are pens. All pens are papers. Conclusion: I. Some books are papers. II. All books are papers.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Some books may be pens, and all pens are papers, so it's possible some books are papers."
+    },
+    {
+        question: "4) Statements: Some birds are animals. All animals are humans. Conclusion: I. Some birds are humans. II. No bird is a human.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Birds → Animals → Humans implies possibility of birds being humans. Conclusion I follows."
+    },
+    {
+        question: "5) Statements: No tree is flower. Some flowers are plants. Conclusion: I. No plant is a tree. II. Some plants are not trees.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only II follows",
+        explanation: "No direct link between plants and trees, but some plants not being trees is possible."
+    },
+    {
+        question: "6) Statements: Some chocolates are sweets. No sweet is a cake. Conclusion: I. Some chocolates are cakes. II. No chocolate is a cake.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Neither I nor II follow",
+        explanation: "No information connects chocolates directly with cakes, so both conclusions are invalid."
+    },
+    {
+        question: "7) Statements: Some doctors are engineers. All engineers are teachers. Conclusion: I. Some doctors are teachers. II. No doctor is a teacher.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Doctors → Engineers → Teachers implies some doctors may be teachers. So, conclusion I follows."
+    },
+    {
+        question: "8) Statements: All chairs are tables. Some tables are desks. Conclusion: I. Some chairs are desks. II. All desks are tables.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Neither I nor II follow",
+        explanation: "No direct relation between chairs and desks, and 'all desks are tables' is not given."
+    },
+    {
+        question: "9) Statements: No bird is a fish. Some fish are mammals. Conclusion: I. No bird is a mammal. II. Some mammals are not birds.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only II follows",
+        explanation: "We cannot derive anything about birds and mammals, but some mammals not being birds is possible."
+    },
+    {
+        question: "10) Statements: All squares are circles. Some circles are triangles. Conclusion: I. Some squares are triangles. II. No square is a triangle.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Neither I nor II follow",
+        explanation: "No definite connection between squares and triangles is provided."
+    },
+    {
+        question: "11) Statements: All dogs are animals. Some animals are pets. Conclusion: I. Some dogs are pets. II. All pets are dogs.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "There is a possibility some dogs are pets through animals, but not all pets are dogs."
+    },
+    {
+        question: "12) Statements: Some flowers are roses. All roses are red. Conclusion: I. Some flowers are red. II. All red flowers are roses.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Some flowers being roses and all roses being red implies some flowers are red."
+    },
+    {
+        question: "13) Statements: Some cars are fast. All fast vehicles are expensive. Conclusion: I. Some cars are expensive. II. All expensive cars are fast.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Some cars → fast → expensive implies some cars may be expensive. No basis for conclusion II."
+    },
+    {
+        question: "14) Statements: No fish is a bird. Some birds are sparrows. Conclusion: I. No sparrow is a fish. II. Some birds are not fish.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "If no bird is a fish, then sparrows (being birds) can't be fish either. Conclusion I follows."
+    },
+    {
+        question: "15) Statements: All humans are mammals. No mammal is a reptile. Conclusion: I. No human is a reptile. II. All mammals are humans.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Humans are mammals and no mammal is a reptile, so humans can't be reptiles. II is not supported."
+    },
+    {
+        question: "16) Statements: Some birds are chickens. All chickens are animals. Conclusion: I. Some birds are animals. II. All animals are birds.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Some birds → chickens → animals implies some birds are animals. Conclusion II is not valid."
+    },
+    {
+        question: "17) Statements: No cat is a dog. Some dogs are pets. Conclusion: I. No pet is a cat. II. Some pets are not dogs.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only II follows",
+        explanation: "Nothing is said about cats and pets. But from 'some dogs are pets', it's possible some pets are not dogs."
+    },
+    {
+        question: "18) Statements: All actors are performers. Some performers are singers. Conclusion: I. Some actors are singers. II. All singers are actors.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Some performers are singers, and all actors are performers, so some actors might be singers."
+    },
+    {
+        question: "19) Statements: Some birds are migratory. All migratory animals are seasonal. Conclusion: I. Some birds are seasonal. II. All seasonal birds are migratory.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "Some birds being migratory and all migratory animals being seasonal means some birds are seasonal."
+    },
+    {
+        question: "20) Statements: No tiger is a lion. Some lions are wild. Conclusion: I. No wild tiger is a lion. II. Some wild lions are tigers.",
+        options: ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"],
+        answer: "Only I follows",
+        explanation: "No tiger is a lion. So, even wild tigers can’t be lions. II is incorrect."
+    }
+
+];
+
+</script>
+</body>
+</html>

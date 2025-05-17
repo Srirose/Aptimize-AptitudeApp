@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - AptiMize</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="quizstyles.css"> 
+    <script src="questions.js" defer></script>  
+ </head>
+<body>
+    <div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Train Problems</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+
+   <footer>
+        &copy; 2025 AptiMize - All Rights Reserved
+    </footer> 
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let startTime = Date.now();
+
+        let questions = [
+            { question: "1) A train 150m long passes a pole in 15 sec. What is its speed?", options: ["10 m/s", "12 m/s", "15 m/s", "18 m/s"], answer: "10 m/s", explanation: "Speed = Distance / Time = 150 / 15 = 10 m/s." },
+            { question: "2) A train moving at 90 km/h crosses a man in 6 sec. Find the train's length.", options: ["150m", "135m", "180m", "200m"], answer: "150m", explanation: "Convert 90 km/h to m/s: (90×1000)/3600 = 25 m/s. Length = 25 × 6 = 150m." },
+            { question: "3) A train is 200m long and takes 10 sec to pass a pole. Find its speed.", options: ["20 m/s", "25 m/s", "30 m/s", "15 m/s"], answer: "20 m/s", explanation: "Speed = Distance / Time = 200 / 10 = 20 m/s." },
+            { question: "4) A train passes a standing man in 12 sec at 72 km/h. Find train length.", options: ["240m", "180m", "144m", "216m"], answer: "240m", explanation: "72 km/h = 20 m/s. Length = 20 × 12 = 240m." },
+            { question: "5) A train running at 60 km/h crosses a bridge in 30 sec. Bridge length is 300m. Find train length.", options: ["200m", "150m", "250m", "180m"], answer: "200m", explanation: "60 km/h = 16.67 m/s. Total distance = 16.67 × 30 ≈ 500m. Train length = 500 - 300 = 200m." },
+            { question: "6) A train 120m long crosses a 180m platform in 18 sec. Find speed.", options: ["60 km/h", "70 km/h", "80 km/h", "90 km/h"], answer: "60 km/h", explanation: "Total distance = 300m. Speed = 300 / 18 = 16.67 m/s = 60 km/h." },
+            { question: "7) A train crosses a 100m bridge in 20 sec at 54 km/h. Find train length.", options: ["200m", "150m", "180m", "160m"], answer: "150m", explanation: "54 km/h = 15 m/s. Total distance = 15 × 20 = 300m. Train length = 300 - 100 = 200m." },
+            { question: "8) A 210m train crosses a 300m platform in 30 sec. Find its speed.", options: ["60 km/h", "72 km/h", "80 km/h", "90 km/h"], answer: "72 km/h", explanation: "Total distance = 510m. Speed = 510 / 30 = 17 m/s = 61.2 km/h ≈ 72 km/h." },
+            { question: "9) A 180m long train passes a 240m platform in 24 sec. Find speed.", options: ["72 km/h", "90 km/h", "84 km/h", "80 km/h"], answer: "72 km/h", explanation: "Distance = 420m. Speed = 420 / 24 = 17.5 m/s = 63 km/h." },
+            { question: "10) A 200m train crosses a bridge in 25 sec at 72 km/h. Find bridge length.", options: ["250m", "200m", "220m", "180m"], answer: "250m", explanation: "72 km/h = 20 m/s. Distance = 20 × 25 = 500m. Bridge length = 500 - 200 = 300m." },
+            { question: "11) Two trains of 150m & 200m cross each other in 20 sec. Speed sum is 90 km/h. Find individual speeds.", options: ["40 km/h & 50 km/h", "30 km/h & 60 km/h", "45 km/h & 45 km/h", "50 km/h & 40 km/h"], answer: "40 km/h & 50 km/h", explanation: "Relative speed = (150+200)/20 = 17.5 m/s = 63 km/h. Closest match: 40 + 50 = 90 km/h." },
+            { question: "12) Two trains of 180m & 220m cross in 12 sec. Combined speed is 108 km/h. Find each train's speed.", options: ["50 km/h & 58 km/h", "55 km/h & 53 km/h", "45 km/h & 63 km/h", "60 km/h & 48 km/h"], answer: "60 km/h & 48 km/h", explanation: "Total distance = 400m. Time = 12 sec ⇒ Speed = 400 / 12 = 33.33 m/s = 120 km/h." },
+            { question: "13) Two trains moving in opposite directions take 10 sec to cross each other. Their speeds are 40 km/h & 50 km/h. Find combined length.", options: ["200m", "250m", "300m", "350m"], answer: "250m", explanation: "Relative speed = 90 km/h = 25 m/s. Distance = 25 × 10 = 250m." },
+            { question: "14) Two trains of equal length cross each other in 8 sec. Combined speed is 120 km/h. Find train length.", options: ["100m", "120m", "150m", "180m"], answer: "120m", explanation: "Speed = 120 km/h = 33.33 m/s. Total length = 33.33 × 8 ≈ 266.67 ⇒ Each = 133m." },
+            { question: "15) Two trains moving at 72 km/h & 54 km/h cross in 15 sec. One is 100m long. Find the length of other.", options: ["150m", "175m", "200m", "225m"], answer: "175m", explanation: "Relative speed = 126 km/h = 35 m/s. Total distance = 35 × 15 = 525m. Other train = 525 - 100 = 425m." }
+        ];
+    </script>
+</body>
+</html>

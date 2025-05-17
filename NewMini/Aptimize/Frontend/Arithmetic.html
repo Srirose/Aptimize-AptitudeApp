@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AptiMize - Arithmetic Topics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="topicquizscore.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="modal.js" defer></script>  
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>          
+            <div class="nav-right">
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Arithmetic Topics</h1>
+            <!-- <h1>Arithmetic Problems</h1> -->
+            <p class="subtitle">Select a topic to start learning and practicing</p>
+        </div>
+
+        <div class="topic-grid">
+            <div class="topic-card">
+                <h3>🚆 Train Problems</h3>
+                <p>Learn to solve problems related to trains, speed, time, and distance calculations.</p>
+                <div class="topic-actions">
+                    <a href="train.html?topic=train" class="primary-btn">Start Learning</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('trainFormula')">Show Formula</button>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h3>💰 Profit & Loss</h3>
+                <p>Master the concepts of profit, loss, and percentage calculations in business scenarios.</p>
+                <div class="topic-actions">
+                    <a href="profitloss.html?topic=profit-loss" class="primary-btn">Start Learning</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('profitFormula')">Show Formula</button>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h3>⏳ Time & Work</h3>
+                <p>Learn to solve problems related to efficiency, work completion, and resource allocation.</p>
+                <div class="topic-actions">
+                    <a href="timework.html?topic=time-work" class="primary-btn">Start Learning</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('workFormula')">Show Formula</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <a href="scoreboard.html" class="scoreboard-btn">View Scoreboard</a>
+            <a href="home.html" class="back-btn">Back to Categories</a>
+        </div>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="formulaModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeFormulaModal()">&times;</span>
+            <div class="modal-body">
+                <!-- Train Formula -->
+                <div id="trainFormula" class="formula-box">
+                    <h4>Train Problem Formulas</h4>
+                    <p><strong>When trains move in opposite directions:</strong></p>
+                    <p>$$ \text{Relative Speed} = \text{Speed}_1 + \text{Speed}_2 $$</p>
+                
+                    <p><strong>When trains move in the same direction:</strong></p>
+                    <p>$$ \text{Relative Speed} = \text{Faster Speed} - \text{Slower Speed} $$</p>
+                
+                    <p><strong>Time taken to cross each other:</strong></p>
+                    <p>$$ \text{Time} = \frac{\text{Sum of lengths of both trains}}{\text{Relative Speed}} $$</p>
+                
+                    <p><strong>Time taken to pass a platform:</strong></p>
+                    <p>$$ \text{Time} = \frac{\text{Length of Train + Length of Platform}}{\text{Speed of Train}} $$</p>
+                
+                    <p><strong>Time taken to pass a pole or man (point object):</strong></p>
+                    <p>$$ \text{Time} = \frac{\text{Length of Train}}{\text{Speed of Train}} $$</p>
+                
+                    <p><strong>Speed conversions:</strong></p>
+                    <p>$$ \text{Speed (m/s)} = \frac{\text{Speed (km/h)} \times 1000}{3600} $$</p>
+                    <p>$$ \text{Speed (km/h)} = \frac{\text{Speed (m/s)} \times 3600}{1000} $$</p>
+                
+                    <p><strong>If a train crosses a platform in \( t_1 \) seconds and a man in \( t_2 \) seconds:</strong></p>
+                    <p>$$ \text{Length of platform} = \text{Speed} \times (t_1 - t_2) $$</p>
+                </div>
+
+                <!-- Profit & Loss Formula -->
+                <div id="profitFormula" class="formula-box">
+                    <h4>Profit & Loss Formulas</h4>
+                    <p><strong>Basic Definitions:</strong></p>
+                    <p>$$ \text{Profit (P)} = \text{Selling Price (SP)} - \text{Cost Price (CP)} $$</p>
+                    <p>$$ \text{Loss (L)} = \text{Cost Price (CP)} - \text{Selling Price (SP)} $$</p>
+                
+                    <p><strong>Profit and Loss Percentage:</strong></p>
+                    <p>$$ \text{Profit \%} = \left( \frac{\text{Profit}}{\text{CP}} \right) \times 100 $$</p>
+                    <p>$$ \text{Loss \%} = \left( \frac{\text{Loss}}{\text{CP}} \right) \times 100 $$</p>
+                
+                    <p><strong>Finding Selling Price (SP):</strong></p>
+                    <p>If profit % is given:</p>
+                    <p>$$ \text{SP} = \text{CP} \left( 1 + \frac{\text{Profit \%}}{100} \right) $$</p>
+                    <p>If loss % is given:</p>
+                    <p>$$ \text{SP} = \text{CP} \left( 1 - \frac{\text{Loss \%}}{100} \right) $$</p>
+                
+                    <p><strong>Finding Cost Price (CP):</strong></p>
+                    <p>$$ \text{CP} = \frac{\text{SP}}{1 + \frac{\text{Profit \%}}{100}} $$</p>
+                    <p>$$ \text{CP} = \frac{\text{SP}}{1 - \frac{\text{Loss \%}}{100}} $$</p>
+                
+                    <p><strong>Mark Price (MP) and Discount:</strong></p>
+                    <p>$$ \text{Discount} = \text{Mark Price (MP)} - \text{Selling Price (SP)} $$</p>
+                    <p>$$ \text{Discount \%} = \left( \frac{\text{Discount}}{\text{MP}} \right) \times 100 $$</p>
+                
+                    <p><strong>Overall Profit or Loss (when multiple articles involved):</strong></p>
+                    <p>$$ \text{Total CP} = \sum \text{Individual CPs}, \quad \text{Total SP} = \sum \text{Individual SPs} $$</p>
+                    <p>$$ \text{Overall Profit or Loss \%} = \left( \frac{\text{Total SP} - \text{Total CP}}{\text{Total CP}} \right) \times 100 $$</p>
+                </div>
+
+                <!-- Time & Work Formula -->
+                <div id="workFormula" class="formula-box">
+                    <h4>Time & Work Formulas</h4>
+                    <p><strong>Basic Concept:</strong></p>
+                    <p>$$ \text{Work} = \text{Time} \times \text{Rate of Work} $$</p>
+                    <p>$$ \text{Rate of Work} = \frac{1}{\text{Time}} $$</p>
+                
+                    <p><strong>If A can do a work in \( x \) days:</strong></p>
+                    <p>$$ \text{A's 1 day work} = \frac{1}{x} $$</p>
+                
+                    <p><strong>If A can do a work in \( x \) days and B in \( y \) days:</strong></p>
+                    <p>$$ \text{A and B together can do the work in} = \frac{xy}{x + y} \text{ days} $$</p>
+                
+                    <p><strong>If A is \( n \) times as efficient as B:</strong></p>
+                    <p>$$ \text{Time taken by B} = n \times \text{Time taken by A} $$</p>
+                
+                    <p><strong>If A and B can complete a work in \( x \) and \( y \) days respectively, and A leaves after \( m \) days:</strong></p>
+                    <p>Total work = LCM of \( x \) and \( y \)<br>
+                       Work done by A in \( m \) days = \( m \times \frac{1}{x} \)<br>
+                       Remaining work is done by B = \( \frac{\text{Total Work} - \text{A's Work}}{1/y} \)</p>
+                
+                    <p><strong>If the whole work is W units and A's efficiency is E (units/day):</strong></p>
+                    <p>$$ \text{Time} = \frac{W}{E} $$</p>
+                    <p><strong>Work equivalence:</strong></p>
+                    <p>1 man = 1 unit<br>1 woman = 0.8 units (varies by assumption)<br>1 child = 0.5 units</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

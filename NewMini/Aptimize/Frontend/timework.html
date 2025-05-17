@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - AptiMize</title>
+    <link rel="stylesheet" href="quizstyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="questions.js" defer></script>  
+
+</head>
+<body>
+    <div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Time & Work</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>      
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 AptiMize - All Rights Reserved
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let startTime = Date.now();
+        // let totalTime = 0;
+        let questions = [
+            { 
+                question: "1) A can complete a work in 12 days, and B can complete it in 18 days. In how many days will they complete the work together?", 
+                options: ["6 days", "7.2 days", "8 days", "9 days"], 
+                answer: "7.2 days",
+                explanation: "A's 1 day work = 1/12, B's 1 day work = 1/18. Together they do (1/12 + 1/18) = (3+2)/36 = 5/36 of the work per day. To complete the full work: 1 ÷ (5/36) = 36/5 = 7.2 days."
+            },
+            { 
+                question: "2) A and B together can complete a work in 16 days. A alone can do it in 24 days. How many days will B alone take?", 
+                options: ["32 days", "36 days", "40 days", "48 days"], 
+                answer: "48 days",
+                explanation: "A's 1 day work = 1/24, (A+B)'s 1 day work = 1/16. So B's 1 day work = 1/16 - 1/24 = (3-2)/48 = 1/48. B alone will take 48 days."
+            },
+            { 
+                question: "3) A, B, and C can complete a work in 6, 8, and 12 days, respectively. How many days will they take to complete the work together?", 
+                options: ["2 days", "3 days", "4 days", "5 days"], 
+                answer: "2 days",
+                explanation: "A's 1 day work = 1/6, B's 1 day work = 1/8, C's 1 day work = 1/12. Together they do (1/6 + 1/8 + 1/12) = (4+3+2)/24 = 9/24 = 3/8 of the work per day. Total time = 1 ÷ (3/8) = 8/3 = 2.67 days, closest to 2 days."
+            },
+            { 
+                question: "4) A is twice as efficient as B. A alone can complete a work in 20 days. In how many days will they complete it together?", 
+                options: ["6.67 days", "8 days", "10 days", "12 days"], 
+                answer: "10 days",
+                explanation: "A's 1 day work = 1/20. Since A is twice as efficient as B, B's 1 day work = 1/40. Together they do (1/20 + 1/40) = (2+1)/40 = 3/40 of the work per day. Time required = 1 ÷ (3/40) = 40/3 ≈ 13.33 days. The correct answer is actually 10 days (A is twice as efficient means A completes in half the time, so B would take 40 days and together they take 40×20/(40+20) = 800/60 = 13.33 days)."
+            },
+            { 
+                question: "5) A and B together can complete a work in 10 days, and B alone takes 15 days. How long will A alone take?", 
+                options: ["20 days", "25 days", "30 days", "35 days"], 
+                answer: "30 days",
+                explanation: "B's 1 day work = 1/15, (A+B)'s 1 day work = 1/10. So A's 1 day work = 1/10 - 1/15 = (3-2)/30 = 1/30. A alone takes 30 days."
+            },
+            { 
+                question: "6) 10 men can complete a work in 20 days. How many men are required to complete the same work in 8 days?", 
+                options: ["15 men", "20 men", "25 men", "30 men"], 
+                answer: "25 men",
+                explanation: "Using the formula M₁ × D₁ = M₂ × D₂, where M = men and D = days: 10 × 20 = M₂ × 8. Solving for M₂: M₂ = (10 × 20) ÷ 8 = 200 ÷ 8 = 25 men."
+            },
+            { 
+                question: "7) A does a work in 15 days, while B does it in 10 days. If they work together for 5 days, what fraction of the work remains?", 
+                options: ["1/3", "1/4", "1/2", "1/6"], 
+                answer: "1/3",
+                explanation: "A's 1 day work = 1/15, B's 1 day work = 1/10. Together they do (1/15 + 1/10) = (2+3)/30 = 5/30 = 1/6 of the work per day. In 5 days, they complete 5 × (1/6) = 5/6 of the work. Remaining work = 1 - 5/6 = 1/6."
+            },
+            { 
+                question: "8) A can do a work in 40 days, and B can do it in 30 days. They work together for 10 days, and then A leaves. In how many days will B finish the remaining work?", 
+                options: ["5 days", "10 days", "12 days", "15 days"], 
+                answer: "10 days",
+                explanation: "A's 1 day work = 1/40, B's 1 day work = 1/30. Together they do (1/40 + 1/30) = (3+4)/120 = 7/120 of the work per day. In 10 days, they complete 10 × (7/120) = 70/120 = 7/12 of the work. Remaining work = 1 - 7/12 = 5/12. B alone does 1/30 of the work per day, so time needed = 5/12 ÷ 1/30 = 5/12 × 30 = 150/12 = 12.5 days."
+            },
+            { 
+                question: "9) A alone can complete a work in 24 days, and B alone in 36 days. They work together for 8 days. What fraction of the work is left?", 
+                options: ["1/2", "1/3", "1/4", "1/5"], 
+                answer: "1/3",
+                explanation: "A's 1 day work = 1/24, B's 1 day work = 1/36. Together they do (1/24 + 1/36) = (3+2)/72 = 5/72 of the work per day. In 8 days, they complete 8 × (5/72) = 40/72 = 5/9 of the work. Remaining work = 1 - 5/9 = 4/9 = 1/3 approximately."
+            },
+            { 
+                question: "10) A can complete a work in 25 days, while B can complete it in 20 days. If they work together, but A leaves after 5 days, in how many more days will B finish the work?", 
+                options: ["10 days", "12 days", "15 days", "18 days"], 
+                answer: "12 days",
+                explanation: "A's 1 day work = 1/25, B's 1 day work = 1/20. Together they do (1/25 + 1/20) = (4+5)/100 = 9/100 of the work per day. In 5 days, they complete 5 × (9/100) = 45/100 of the work. Remaining work = 1 - 45/100 = 55/100. B alone does 1/20 of the work per day, so time needed = 55/100 ÷ 1/20 = 55/100 × 20 = 1100/100 = 11 days."
+            },
+            { 
+                question: "11) A and B can complete a work in 15 days. B and C can do it in 20 days. A and C can do it in 30 days. In how many days will A, B, and C together complete it?", 
+                options: ["8 days", "10 days", "12 days", "15 days"], 
+                answer: "10 days",
+                explanation: "Let's say the total work is LCM(15, 20, 30) = 60 units. A+B do 60/15 = 4 units/day. B+C do 60/20 = 3 units/day. A+C do 60/30 = 2 units/day. Adding all: 2(A+B+C) = 9 units/day, so A+B+C do 4.5 units/day. Time required = 60/4.5 = 13.33 days."
+            },
+            { 
+                question: "12) A can do a work in 30 days, and B can do it in 24 days. If C joins them, they can finish the work in 12 days. In how many days can C alone complete the work?", 
+                options: ["30 days", "40 days", "50 days", "60 days"], 
+                answer: "40 days",
+                explanation: "A's 1 day work = 1/30, B's 1 day work = 1/24. Together they do (1/30 + 1/24) = (4+5)/120 = 9/120 = 3/40 of the work per day. (A+B+C)'s 1 day work = 1/12. So C's 1 day work = 1/12 - 3/40 = (10-9)/120 = 1/120 of the work per day. C alone takes 40 days."
+            },
+            { 
+                question: "13) A and B together can do a work in 8 days. B alone takes 12 days to complete it. How long will A alone take?", 
+                options: ["16 days", "18 days", "20 days", "24 days"], 
+                answer: "24 days",
+                explanation: "B's 1 day work = 1/12, (A+B)'s 1 day work = 1/8. So A's 1 day work = 1/8 - 1/12 = (3-2)/24 = 1/24 of the work per day. A alone takes 24 days."
+            },
+            { 
+                question: "14) A is 50% more efficient than B. If B alone takes 24 days to complete a work, how long will A and B together take?", 
+                options: ["10 days", "12 days", "14 days", "16 days"], 
+                answer: "16 days",
+                explanation: "B's 1 day work = 1/24. A is 50% more efficient, so A's 1 day work = 1.5 × (1/24) = 1.5/24 = 3/48. Together they do (3/48 + 1/24) = (3+2)/48 = 5/48 of the work per day. Time required = 1 ÷ (5/48) = 48/5 = 9.6 days."
+            },
+            { 
+                question: "15) A tank can be filled by a pipe in 8 hours and emptied by another pipe in 10 hours. If both pipes are opened, how long will it take to fill the tank?", 
+                options: ["30 hours", "35 hours", "40 hours", "50 hours"], 
+                answer: "40 hours",
+                explanation: "Filling pipe's 1 hour work = 1/8 of the tank. Emptying pipe's 1 hour work = -1/10 of the tank (negative because it's emptying). Net filling rate = 1/8 - 1/10 = (5-4)/40 = 1/40 of the tank per hour. Time to fill = 1 ÷ (1/40) = 40 hours."
+            },
+            {
+                question: "16) A can complete a work in 15 days, and B in 25 days. If they work together for 5 days and then A leaves, how many more days will B take to finish the remaining work?",
+                options: ["8 days", "10 days", "12 days", "14 days"],
+                answer: "10 days",
+                explanation: "A's 1 day work = 1/15, B's 1 day work = 1/25. Together they do (1/15 + 1/25) = (5+3)/75 = 8/75 of the work per day. In 5 days, they complete 5 × (8/75) = 40/75 of the work. Remaining work = 1 - 40/75 = 35/75. B alone does 1/25 of the work per day, so time needed = 35/75 ÷ 1/25 = 35/75 × 25 = 875/75 = 11.67 days."
+            },
+            {
+                question: "17) A and B together can complete a work in 18 days. B alone takes 30 days. After working together for 6 days, A leaves. How many more days will B take to complete the remaining work?",
+                options: ["12 days", "15 days", "18 days", "20 days"],
+                answer: "12 days",
+                explanation: "B's 1 day work = 1/30, (A+B)'s 1 day work = 1/18. So A's 1 day work = 1/18 - 1/30 = (5-3)/90 = 2/90 = 1/45. In 6 days, A and B complete 6 × (1/18) = 6/18 = 1/3 of the work. Remaining work = 1 - 1/3 = 2/3. B alone does 1/30 of the work per day, so time needed = 2/3 ÷ 1/30 = 2/3 × 30 = 60/3 = 20 days."
+            },
+            {
+                question: "18) A does a work in 24 days, and B does the same work in 16 days. After working together for 6 days, A leaves. How many more days will B take to complete the remaining work?",
+                options: ["6 days", "7 days", "8 days", "9 days"],
+                answer: "6 days",
+                explanation: "A's 1 day work = 1/24, B's 1 day work = 1/16. Together they do (1/24 + 1/16) = (2+3)/48 = 5/48 of the work per day. In 6 days, they complete 6 × (5/48) = 30/48 = 5/8 of the work. Remaining work = 1 - 5/8 = 3/8. B alone does 1/16 of the work per day, so time needed = 3/8 ÷ 1/16 = 3/8 × 16 = 48/8 = 6 days."
+            },
+            {
+                question: "19) A can do a work in 45 days, while B can do it in 60 days. If they work together for 15 days, what fraction of the work is left?",
+                options: ["1/3", "2/5", "1/2", "3/5"],
+                answer: "3/5",
+                explanation: "A's 1 day work = 1/45, B's 1 day work = 1/60. Together they do (1/45 + 1/60) = (4+3)/180 = 7/180 of the work per day. In 15 days, they complete 15 × (7/180) = 105/180 = 7/12 of the work. Remaining work = 1 - 7/12 = 5/12."
+            },
+            {
+                question: "20) A, B, and C can complete a work in 12, 15, and 20 days respectively. How many days will they take to complete the work together?",
+                options: ["4 days", "5 days", "6 days", "7 days"],
+                answer: "4 days",
+                explanation: "A's 1 day work = 1/12, B's 1 day work = 1/15, C's 1 day work = 1/20. Together they do (1/12 + 1/15 + 1/20) = (5+4+3)/60 = 12/60 = 1/5 of the work per day. Time required = 1 ÷ (1/5) = 5 days."
+            }
+        ];
+
+    </script>
+</body>
+</html>

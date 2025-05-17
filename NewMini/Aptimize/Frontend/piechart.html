@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pie Chart Quiz - AptiMize</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="quizstyles.css">
+   <script src="barpie.js" defer></script>  
+</head>
+<body>
+  <div class="header">
+    <h1 class="brand">AptiMize</h1>
+  </div>
+  <div class="quiz-container">
+    <h2>Topic: Pie Chart Analysis</h2>
+    <img id="chart-image" class="chart-img" src="" alt="Pie Chart Image" />
+    <h3 id="question-text">Loading...</h3>
+    <div id="options"></div>
+    <div class="btn-container">
+      <button id="next-btn" onclick="nextQuestion()">
+        <i class="fas fa-arrow-right"></i> Next Question
+      </button>
+    </div>
+    <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+      <i class="fas fa-check-circle"></i> Submit Quiz
+    </button>
+    <div id="score">
+      <h3>Score: <span id="score-value">0</span></h3>
+    </div>
+    <div id="time">
+      <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+    </div>
+    <div id="explanation">
+      <h3>Explanation:</h3>
+      <p id="explanation-text"></p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 AptiMize - All Rights Reserved
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+  <script>
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let startTime = Date.now();
+
+    let questions = [
+      { img: "pieimg1.png", question: "1) What percentage does category 'T' represent?", options: ["21%", "16%", "10%", "15%"], answer: "21%", explanation: "'T' is the largest sector on the chart, and its label shows 21%." },
+      { img: "pieimg1.png", question: "2) Which category has the highest percentage?", options: ["T", "X", "R", "Z"], answer: "T", explanation: "By comparing all values, 'T' has the largest slice in the chart." },
+      { img: "pieimg1.png", question: "3) What is the combined percentage of X and R?", options: ["32%", "27%", "37%", "22%"], answer: "32%", explanation: "'X' is 18% and 'R' is 14%, adding to 32%." },
+      { img: "pieimg1.png", question: "4) Which two categories together make up 26%?", options: ["S & Z", "V & R", "T & V", "X & Y"], answer: "S & Z", explanation: "S is 10% and Z is 16%, total = 26%." },
+      { img: "pieimg1.png", question: "5) Which category has the lowest percentage?", options: ["V", "T", "R", "S"], answer: "V", explanation: "'V' has the smallest slice, only 8%." },
+
+      { img: "pieimg2.png", question: "6) What is the percentage of marks in Chemistry?", options: ["22%", "15%", "25%", "20%"], answer: "22%", explanation: "The chart shows Chemistry with a label of 22%." },
+      { img: "pieimg2.png", question: "7) What subject has the highest percentage?", options: ["Chemistry", "Math", "Economics", "History"], answer: "Chemistry", explanation: "Among all segments, Chemistry has the largest portion." },
+      { img: "pieimg2.png", question: "8) If total marks are 1800, how many marks are in English?", options: ["180", "200", "220", "270"], answer: "180", explanation: "English is 10% of 1800 = 0.10 × 1800 = 180." },
+      { img: "pieimg2.png", question: "9) If Physics accounts for 8%, how many marks is that?", options: ["144", "180", "200", "160"], answer: "144", explanation: "8% of 1800 = 0.08 × 1800 = 144." },
+      { img: "pieimg2.png", question: "10) What is the total percentage of History and Economics?", options: ["28%", "30%", "35%", "40%"], answer: "30%", explanation: "History = 18%, Economics = 12%. Total = 30%." },
+
+      { img: "pieimg3.jpg", question: "11) Which company has the highest market share?", options: ["Himalaya", "Fair & Lovely", "Lakme", "Amway"], answer: "Fair & Lovely", explanation: "Its segment is visibly the largest on the chart." },
+      { img: "pieimg3.jpg", question: "12) What is the market share of Dove?", options: ["12%", "15%", "9%", "21%"], answer: "12%", explanation: "The label on the pie chart for Dove is 12%." },
+      { img: "pieimg3.jpg", question: "13) Which company has the lowest market share?", options: ["Ponds", "Dove", "Lakme", "Amway"], answer: "Ponds", explanation: "Ponds occupies the smallest segment in the pie." },
+      { img: "pieimg3.jpg", question: "14) What is the combined market share of Himalaya and Amway?", options: ["40%", "30%", "19%", "35%"], answer: "40%", explanation: "Himalaya = 18%, Amway = 22%, total = 40%." },
+      { img: "pieimg3.jpg", question: "15) How much more market share does Fair & Lovely have than Lakme?", options: ["10%", "5%", "8%", "7%"], answer: "10%", explanation: "Fair & Lovely = 25%, Lakme = 15%, difference = 10%." },
+
+      { img: "pieimg4.jpg", question: "16) Which sector uses the least amount of energy?", options: ["Domestic", "Commercial", "Transport", "Thermal"], answer: "Domestic", explanation: "Domestic sector has the smallest segment." },
+      { img: "pieimg4.jpg", question: "17) What percentage of energy is used by Transport?", options: ["30%", "35%", "20%", "15%"], answer: "30%", explanation: "Transport segment is labeled as 30%." },
+      { img: "pieimg4.jpg", question: "18) Which sector consumes the highest energy?", options: ["Thermal", "Transport", "Commercial", "Domestic"], answer: "Thermal", explanation: "Thermal is the largest portion in the chart." },
+      { img: "pieimg4.jpg", question: "19) How much more energy is used by Thermal than Domestic?", options: ["20%", "15%", "10%", "25%"], answer: "20%", explanation: "Thermal = 35%, Domestic = 15%, difference = 20%." },
+      { img: "pieimg4.jpg", question: "20) What is the total percentage of Commercial and Domestic?", options: ["35%", "30%", "40%", "45%"], answer: "35%", explanation: "Commercial = 20%, Domestic = 15%, total = 35%." }
+    ];
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streak - AptiMize</title>
+    <style>
+        body {
+            background-color: #4B0082;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .streak-container {
+            background: white;
+            color: black;
+            padding: 20px;
+            width: 300px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .streak-number {
+            font-size: 50px;
+            font-weight: bold;
+            color: #4B0082;
+        }
+        .streak-message {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .streak-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .streak-progress {
+            height: 100%;
+            background: #4B0082;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        .button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background: #4B0082;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background: #e50b0b;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="streak-container">
+        <h2>🔥 Your Streak 🔥</h2>
+        <div class="streak-number" id="current-streak">0</div>
+        <p>Best Streak: <span id="best-streak">0</span></p>
+
+        <div class="streak-bar">
+            <div class="streak-progress" id="streak-progress"></div>
+        </div>
+
+        <p class="streak-message" id="streak-message">Keep it going! 💪</p>
+
+        <button class="button hidden" id="reset-btn" onclick="resetStreak()">Reset Streak</button>
+    </div>
+
+    <script>
+        let currentStreak = localStorage.getItem("currentStreak") ? parseInt(localStorage.getItem("currentStreak")) : 0;
+        let bestStreak = localStorage.getItem("bestStreak") ? parseInt(localStorage.getItem("bestStreak")) : 0;
+
+        function updateStreak() {
+            document.getElementById("current-streak").innerText = currentStreak;
+            document.getElementById("best-streak").innerText = bestStreak;
+
+            let progress = (currentStreak / (bestStreak || 1)) * 100;
+            document.getElementById("streak-progress").style.width = progress + "%";
+
+            let message = "";
+            if (currentStreak === 0) {
+                message = "Start your streak today! 🚀";
+            } else if (currentStreak < 5) {
+                message = "Good start! Keep going! 🔥";
+            } else if (currentStreak < 10) {
+                message = "Amazing! You're on a roll! 🎯";
+            } else {
+                message = "Unstoppable! You're a streak legend! 🌟";
+            }
+            document.getElementById("streak-message").innerText = message;
+        }
+
+        function incrementStreak() {
+            currentStreak++;
+            if (currentStreak > bestStreak) {
+                bestStreak = currentStreak;
+            }
+            localStorage.setItem("currentStreak", currentStreak);
+            localStorage.setItem("bestStreak", bestStreak);
+            updateStreak();
+        }
+
+        function resetStreak() {
+            currentStreak = 0;
+            localStorage.setItem("currentStreak", currentStreak);
+            updateStreak();
+        }
+
+        function showResetButtonForDeveloper() {
+            const developerMode = true; // Change this to false to hide the reset button
+            if (developerMode) {
+                document.getElementById("reset-btn").classList.remove("hidden");
+            }
+        }
+
+        updateStreak();
+        showResetButtonForDeveloper();
+
+        // Example: Call this function when the user completes a quiz
+        // incrementStreak();
+    </script>
+
+</body>
+</html>

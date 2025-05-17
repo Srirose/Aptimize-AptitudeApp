@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APTIMIZE</title>
+    <link rel="stylesheet" href="category.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .nav-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style-type: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.2s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-menu a:hover {
+            color: #2563eb;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #2563eb;
+            transition: width 0.3s;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        /* Streak Box */
+        .streak-box {
+            background: linear-gradient(45deg, #ff6b6b, #ffa36b);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(255, 107, 107, 0.3);
+        }
+        
+        /* Login Button */
+        .login-btn a {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .login-btn a:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+        
+        /* Main Content Area */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 2rem 0;
+            color: #2563eb;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .category-card:hover .category-img img {
+            transform: scale(1.05);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .category-card:hover .category-overlay {
+            opacity: 1;
+        }
+        
+        .category-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .category-content h2 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-content p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .start-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .start-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .nav-menu {
+                margin: 1rem 0;
+            }
+            
+            .nav-right {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            
+            <div class="nav-right">
+                <div class="streak-box">
+                    <p id="streakCount">🔥 Streak: 0 days</p>
+                </div>
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 class="section-title">Improve Your Aptitude Skills</h1>
+        
+        <div class="categories">
+            <div class="category-card">
+                <div class="category-img">
+                    <img src="arithmetic.jpg" alt="Arithmetic">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-content">
+                    <h2>ARITHMETIC</h2>
+                    <p>Master mathematical operations and numerical problem-solving skills</p>
+                    <button class="start-btn" onclick="arithmetictopic()">Start Learning</button>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <img src="datainterpretation.jpg" alt="Data Interpretation">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-content">
+                    <h2>DATA INTERPRETATION</h2>
+                    <p>Learn to analyze and interpret complex data presentations</p>
+                    <button class="start-btn" onclick="datainterpretation()">Start Learning</button>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <img src="logical.jpg" alt="Logical">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-content">
+                    <h2>LOGICAL</h2>
+                    <p>Develop critical thinking and logical reasoning abilities</p>
+                    <button class="start-btn" onclick="logicaltopic()">Start Learning</button>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <img src="verbal.jpg" alt="Verbal">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-content">
+                    <h2>VERBAL</h2>
+                    <p>Enhance your vocabulary and language comprehension skills</p>
+                    <button class="start-btn" onclick="verbaltopic()">Start Learning</button>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <img src="nonverbal.jpg" alt="Non-verbal">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-content">
+                    <h2>NON VERBAL</h2>
+                    <p>Practice pattern recognition and spatial reasoning</p>
+                    <button class="start-btn" onclick="nonverbaltopic()">Start Learning</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function arithmetictopic() {
+            window.location.href = "Arithmetic.html"; 
+        }
+        function logicaltopic() {
+            window.location.href = "Logical.html";
+        }
+        function verbaltopic() {
+            window.location.href = "Verbal.html";
+        }
+        function nonverbaltopic() {
+            window.location.href = "NonVerbal.html";
+        }
+        function datainterpretation() {
+            window.location.href = "DataInterpretation.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const today = new Date().toDateString();
+            let lastLogin = localStorage.getItem("lastLogin");
+            let streak = parseInt(localStorage.getItem("streak")) || 0;
+
+            if (lastLogin === today) {
+                console.log("Already logged in today.");
+            } else {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                if (lastLogin === yesterday.toDateString()) {
+                    streak += 1;
+                } else {
+                    streak = 1;
+                }
+
+                localStorage.setItem("lastLogin", today);
+                localStorage.setItem("streak", streak);
+            }
+
+            document.getElementById("streakCount").textContent = `🔥 Streak: ${streak} days`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dice Quiz - AptiMize</title>
+<link rel="stylesheet" href="quizstyles.css"> 
+    <script src="questions.js" defer></script>  
+</head>
+<body>
+
+<div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Train Problems</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+
+  <script>
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let startTime = Date.now();
+
+    let questions = [
+      {
+        question: "1) A cube has six faces labeled with different numbers. If three adjacent faces show 3, 4, and 5, what number is opposite to 3?",
+        options: ["1", "2", "6", "4"],
+        answer: "6",
+        explanation: "In a cube, opposite faces never touch. Since 3, 4, and 5 are adjacent, their opposites must be among the other numbers. So 6 is opposite to 3."
+      },
+      {
+        question: "2) A standard six-sided dice is rolled. What is the probability of rolling an even number?",
+        options: ["1/6", "1/3", "1/2", "2/3"],
+        answer: "1/2",
+        explanation: "Even numbers on a die are 2, 4, and 6 → 3 out of 6 → Probability = 3/6 = 1/2."
+      },
+      {
+        question: "3) Two dice are rolled together. What is the probability that the sum is 7?",
+        options: ["1/6", "1/12", "1/9", "1/8"],
+        answer: "1/6",
+        explanation: "Combinations that sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) = 6 outcomes out of 36 → 6/36 = 1/6."
+      },
+      {
+        question: "4) A cube with faces labeled A, B, C, D, E, and F is rotated. If A is on top and B is on the front, which face is at the bottom?",
+        options: ["C", "D", "E", "F"],
+        answer: "E",
+        explanation: "In standard cube visualization, if A is on top and B is in front, then the face opposite A (i.e. the bottom) is E."
+      },
+      {
+        question: "5) Three dice are thrown together. What is the probability that all three dice show the same number?",
+        options: ["1/36", "1/216", "1/18", "1/72"],
+        answer: "1/216",
+        explanation: "Only 6 outcomes where all three numbers are the same (e.g. 1-1-1, 2-2-2,...). Total = 6³ = 216 → 6/216 = 1/36."
+      },
+      {
+        question: "6) A die is thrown. What is the probability of getting a prime number?",
+        options: ["1/2", "1/3", "2/3", "1/6"],
+        answer: "1/2",
+        explanation: "Prime numbers on a die: 2, 3, 5 → 3/6 = 1/2."
+      },
+      {
+        question: "7) Two dice are rolled. What is the probability of getting at least one 6?",
+        options: ["1/6", "5/36", "11/36", "1/3"],
+        answer: "11/36",
+        explanation: "P(at least one 6) = 1 - P(no 6 on both) = 1 - (5/6 × 5/6) = 1 - 25/36 = 11/36."
+      },
+      {
+        question: "8) If a fair die is rolled three times, what is the probability of getting at least one 4?",
+        options: ["91/216", "125/216", "1/2", "121/216"],
+        answer: "91/216",
+        explanation: "P(no 4 in any roll) = (5/6)³ = 125/216 → So P(at least one 4) = 1 - 125/216 = 91/216."
+      },
+      {
+        question: "9) A die is rolled. If it lands on an odd number, you win. What is the probability of winning?",
+        options: ["1/2", "1/3", "2/3", "5/6"],
+        answer: "1/2",
+        explanation: "Odd numbers on a die: 1, 3, 5 → 3/6 = 1/2."
+      },
+      {
+        question: "10) A die is thrown twice. What is the probability of rolling a double?",
+        options: ["1/6", "1/36", "1/3", "1/12"],
+        answer: "1/6",
+        explanation: "There are 6 doubles: (1,1), (2,2)...(6,6) → 6/36 = 1/6."
+      },
+      {
+        question: "11) A die is numbered from 1 to 6. What is the probability of rolling a number greater than 4?",
+        options: ["1/2", "1/3", "2/3", "1/6"],
+        answer: "1/3",
+        explanation: "Numbers > 4 are 5 and 6 → 2/6 = 1/3."
+      },
+      {
+        question: "12) Two dice are thrown. What is the probability that their sum is a prime number?",
+        options: ["5/12", "1/2", "1/3", "7/12"],
+        answer: "5/12",
+        explanation: "Prime sums: 3, 5, 7, 11 = 15 outcomes out of 36 → 15/36 = 5/12."
+      },
+      {
+        question: "13) A die is rolled four times. What is the probability that at least one roll is a 6?",
+        options: ["125/216", "155/216", "1/2", "129/216"],
+        answer: "129/216",
+        explanation: "P(no 6 in any roll) = (5/6)^4 = 625/1296 → P(at least one 6) = 1 - 625/1296 = 671/1296 ≈ 129/216."
+      },
+      {
+        question: "14) A standard six-sided die is rolled. What is the probability of rolling a number less than 3?",
+        options: ["1/6", "1/3", "1/2", "2/3"],
+        answer: "1/3",
+        explanation: "Numbers < 3 are 1 and 2 → 2/6 = 1/3."
+      },
+      {
+        question: "15) A cube has six faces labeled with different numbers. If opposite faces always sum to 7, what is the number opposite to 2?",
+        options: ["5", "4", "6", "3"],
+        answer: "5",
+        explanation: "In standard dice, opposite faces sum to 7 → 7 - 2 = 5."
+      },
+      {
+        question: "16) Two fair dice are rolled. What is the probability that the sum is at least 10?",
+        options: ["1/6", "1/12", "1/4", "1/3"],
+        answer: "1/6",
+        explanation: "Sums ≥ 10 are 10, 11, 12 → 6 outcomes out of 36 → 6/36 = 1/6."
+      },
+      {
+        question: "17) If a cube is painted on all six faces and then cut into 64 smaller cubes, how many of these have exactly one painted face?",
+        options: ["24", "36", "48", "56"],
+        answer: "24",
+        explanation: "Only the center cubes on each face have one face painted → 6 faces × 4 cubes = 24."
+      },
+      {
+        question: "18) A fair six-sided die is rolled twice. What is the probability that the second roll is greater than the first?",
+        options: ["5/12", "1/3", "1/2", "7/12"],
+        answer: "5/12",
+        explanation: "There are 15 pairs (out of 36) where the second roll is greater → 15/36 = 5/12."
+      },
+      {
+        question: "19) A cube has faces numbered 1 to 6. If two opposite faces are removed, how many faces remain?",
+        options: ["2", "4", "5", "6"],
+        answer: "4",
+        explanation: "Each cube has 6 faces. Removing 2 opposite leaves 4."
+      },
+      {
+        question: "20) A six-sided die is biased such that the probability of rolling a 6 is twice the probability of rolling any other number. What is the probability of rolling a 6?",
+        options: ["1/4", "1/3", "2/5", "1/2"],
+        answer: "1/3",
+        explanation: "Let probability of 1–5 be x. So 6 = 2x → 5x + 2x = 1 → x = 1/7 → 6 = 2x = 2/7 ≈ 1/3."
+      }
+    ];
+  </script>
+</body>
+</html>

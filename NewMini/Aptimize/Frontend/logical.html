@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AptiMize - Logical Reasoning</title>
+    <link rel="stylesheet" href="topicquizscore.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="modal.js" defer></script>     
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Logical Reasoning</h1>
+            <p class="subtitle">Select a topic to start practicing</p>
+        </div>
+        <div class="topic-grid">
+            <div class="topic-card">
+                <h3>Letter And Symbol</h3>
+                <p>Practice identifying patterns, relationships between letters and symbols.</p>
+                <div class="topic-actions">
+                    <a href="lettersymbol.html?topic=letterandsymbol" class="primary-btn">Start Practice</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('letterSymbolFormula')">Show Formula</button>
+                </div>
+            </div>
+            <div class="topic-card">
+                <h3>Syllogism</h3>
+                <p>Learn to draw logical conclusions from multiple premises and statements.</p>
+                <div class="topic-actions">
+                    <a href="syllogism.html?topic=syllogism" class="primary-btn">Start Practice</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('syllogismFormula')">Show Formula</button>
+                </div>
+            </div>
+        </div>
+
+            <div id="formulaModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeFormulaModal()">&times;</span>
+                    <div class="modal-body">
+                        <div id="letterSymbolFormula" class="formula-box">
+                            <h4>Letter and Symbol Analogy:</h4>
+                            <p>Involves finding relationships between symbols and letters. Common rules include:</p>                       
+                            <p><strong>Alphabet Position:</strong> Identify the position of a letter in the alphabet.</p>
+                            <p>Example: A = 1, B = 2, C = 3, ..., Z = 26</p>
+                            <p><strong>Alphabetic Shift:</strong> Shift a letter forward or backward by a certain number to get another letter.</p>
+                            <p>Example: If we shift A (1) by 3, we get D (4).</p>
+                            <p><strong>Opposite Letter:</strong> The opposite letter can be calculated by finding the letter at an equal distance from the end of the alphabet.</p>
+                            <p>Example: A → Z, B → Y, C → X, etc.</p>
+                            <p><strong>Example with Shift:</strong></p>
+                            <p>If the given symbol is B (Position 2) and we apply a forward shift of 4, the new symbol will be F (Position 6).</p>
+                            <p><strong>Example with Opposite Letter:</strong></p>
+                            <p>If the given symbol is D (Position 4), its opposite letter will be W (Position 23) because it's 4 positions from the end of the alphabet.</p>
+                        </div>
+                        <div id="syllogismFormula" class="formula-box">
+                            <h4>Syllogism:</h4>
+                            <p>Syllogism is a logical argument where a conclusion is drawn from two given or assumed propositions (premises). Common forms of syllogism include:</p>
+                            <p><strong>Major Premise:</strong> A general statement or truth that is accepted.</p>
+                            <p><strong>Minor Premise:</strong> A specific statement related to the major premise.</p>
+                            <p><strong>Conclusion:</strong> A statement that logically follows from the premises.</p>
+                            <p><strong>Example of a Valid Syllogism:</strong></p>
+                            <p>Major Premise: All humans are mortal.</p>
+                            <p>Minor Premise: Socrates is a human.</p>
+                            <p>Conclusion: Socrates is mortal.</p>
+                            <p><strong>Common Forms of Syllogism:</strong></p>
+                            <ul>
+                                <li><strong>All A are B, C is A, therefore C is B.</strong></li>
+                                <li><strong>No A are B, C is A, therefore C is not B.</strong></li>
+                                <li><strong>Some A are B, C is A, therefore C is B (or not B depending on the argument).</strong></li>
+                            </ul>
+                            <p><strong>Valid vs Invalid Syllogism:</strong></p>
+                            <p>A syllogism is valid if the conclusion logically follows from the premises. If not, it is invalid.</p>
+                            <p><strong>Example of an Invalid Syllogism:</strong></p>
+                            <p>Major Premise: All dogs have four legs.</p>
+                            <p>Minor Premise: A cat has four legs.</p>
+                            <p>Conclusion: A cat is a dog. <em>(Invalid conclusion; having four legs does not make a cat a dog)</em></p>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        <div class="footer-actions">
+            <a href="scoreboard.html" class="scoreboard-btn">View Scoreboard</a>
+            <a href="home.html" class="back-btn">Back to Categories</a>
+        </div>
+    </div>
+</body>
+</html>

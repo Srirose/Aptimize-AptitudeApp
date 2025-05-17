@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - AptiMize</title>
+    <link rel="stylesheet" href="category.css">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        .contact-info {
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        .contact-info h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .contact-info p { margin-bottom: 1rem; }
+        .contact-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .icon-box {
+            background-color: rgba(37, 99, 235, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+        .contact-text {
+            color: var(--text);
+        }
+        .contact-text p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .contact-text strong {
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        form {
+            background: var(--bg-white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+        footer {
+            background-color: #1f2937;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        footer p {
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                padding: 0 1rem;
+            }
+            .nav-menu {
+                display: none;
+            }
+            .hero {
+                padding: 3rem 0 2rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="streak-box">
+                    <p id="streakCount">🔥 Streak: 0 days</p>
+                </div>
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Contact Us</h1>
+        <p>Have questions or feedback? We'd love to hear from you.</p>
+    </section>
+    
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p>Fill out the form or contact us directly through the following:</p>
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <span>✉️</span>
+                    </div>
+                    <div class="contact-text">
+                        <strong>Email</strong>
+                        <p>aptimize.help@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <span>🕒</span>
+                    </div>
+                    <div class="contact-text">
+                        <strong>Response Time</strong>
+                        <p>We typically respond within 24 hours</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <span>💬</span>
+                    </div>
+                    <div class="contact-text">
+                        <strong>Support</strong>
+                        <p>Available Monday-Friday, 9am-5pm</p>
+                    </div>
+                </div>
+            </div>
+            <form id="feedback-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 AptiMize. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('feedback-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = {
+                name: this.name.value,
+                email: this.email.value,
+                message: this.message.value
+            };
+            try {
+                const response = await fetch("http://localhost:5000/feedback/submit", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (response.ok) {
+                    alert("Thank you for your feedback!");
+                    this.reset();
+                } else {
+                    alert("Something went wrong. Please try again later.");
+                }
+            } catch (error) {
+                alert("Connection error. Please check your internet connection and try again.");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const today = new Date().toDateString();
+            let lastLogin = localStorage.getItem("lastLogin");
+            let streak = parseInt(localStorage.getItem("streak")) || 0;
+
+            if (lastLogin === today) {
+                console.log("Already logged in today.");
+            } else {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                if (lastLogin === yesterday.toDateString()) {
+                    streak += 1;
+                } else {
+                    streak = 1;
+                }
+
+                localStorage.setItem("lastLogin", today);
+                localStorage.setItem("streak", streak);
+            }
+
+            document.getElementById("streakCount").textContent = `🔥 Streak: ${streak} days`;
+        });
+    </script>
+</body>
+</html>

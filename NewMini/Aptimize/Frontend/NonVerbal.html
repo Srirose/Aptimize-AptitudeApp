@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AptiMize - Non-Verbal Topics</title>
+    <link rel="stylesheet" href="topicquizscore.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="modal.js" defer></script>  
+
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="home.html">APTIMIZE</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="login-btn">
+                    <a href="index.html">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Non-Verbal Topics</h1>
+            <p class="subtitle">Select a topic to start learning and practicing</p>
+        </div>
+        <div class="topic-grid">
+            <div class="topic-card">
+                <h3>🔄 Mirror Image</h3>
+                <p>Learn about mirror reflections and image transformations in spatial reasoning.</p>
+                <div class="topic-actions">
+                    <a href="mirrorimage.html" class="primary-btn">Start Learning</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('mirrorImageFormula')">Show Formula</button>
+                </div>
+            </div>
+            <div class="topic-card">
+                <h3>💧 Water Image</h3>
+                <p>Understand reflections in water and horizontal plane transformations.</p>
+                <div class="topic-actions">
+                    <a href="waterimage.html" class="primary-btn">Start Learning</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('waterImageFormula')">Show Formula</button>
+                </div>
+            </div>
+            <div class="topic-card">
+                <h3>🧩 Pattern Completion</h3>
+                <p>Develop skills in identifying and completing visual patterns and sequences.</p>
+                <div class="topic-actions">
+                    <a href="patterncompletion.html?topic=patterncompletion" class="primary-btn">Start Learning</a>
+                    <button class="secondary-btn" onclick="openFormulaModal('patternCompletionFormula')">Show Formula</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-actions">
+            <a href="scoreboard.html" class="scoreboard-btn">View Scoreboard</a>
+            <a href="home.html" class="back-btn">Back to Categories</a>
+        </div>
+    </div>
+
+    <div id="formulaModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeFormulaModal()">&times;</span>
+            <div class="modal-body">
+                <div id="mirrorImageFormula" class="formula-box">
+                    <h4>Mirror Image Concepts</h4>
+                    <p><strong>Mirror Image:</strong></p>
+                    <p>Involves finding the mirror image of a given figure. Common rules include:</p>
+                    <p><strong>Vertical Mirror Image:</strong> The left and right sides of the object are swapped. For example:</p>
+                    <ul>
+                        <li>If the letter "P" is reflected in a vertical mirror, it becomes "Ԛ".</li>
+                        <li>In a vertical mirror, the object's reflection is flipped horizontally.</li>
+                    </ul>
+                    <p><strong>Horizontal Mirror Image:</strong> The top and bottom sides of the object are swapped. For example:</p>
+                    <ul>
+                        <li>If the letter "E" is reflected in a horizontal mirror, it still remains "E", but flipped upside down.</li>
+                    </ul>
+                    <p><strong>Shape Symmetry:</strong> Some objects have symmetrical reflections along a mirror. For example:</p>
+                    <ul>
+                        <li>A symmetrical shape like a square or an equilateral triangle remains unchanged when reflected in a mirror.</li>
+                        <li>Asymmetrical shapes like letters or objects may look completely different when reflected in a mirror.</li>
+                    </ul>
+                </div>
+                <div id="waterImageFormula" class="formula-box">
+                    <h4>Water Image Concepts</h4>
+                    <p><strong>Water Image:</strong></p>
+                    <p>Water Image problems involve understanding how an object looks when reflected in a body of water. Common rules include:</p>
+                    <p><strong>Vertical Reflection:</strong> The object is flipped vertically, but its left and right sides remain unchanged.</p>
+                    <ul>
+                        <li>If the letter "P" is placed in water, it becomes "Ԛ" (the bottom part is reflected).</li>
+                        <li>The water image involves flipping the object along the horizontal axis.</li>
+                    </ul>
+                    <p><strong>Horizontal Reflection:</strong> The object is flipped along the horizontal axis, resulting in a mirror image from top to bottom.</p>
+                    <ul>
+                        <li>If the letter "A" is placed in water, it remains "A" (since it has vertical symmetry).</li>
+                        <li>Objects with horizontal symmetry remain unchanged in the water image.</li>
+                    </ul>
+                    <p><strong>Shape Symmetry:</strong> Some shapes or letters remain the same when reflected in water due to symmetry. For example:</p>
+                    <ul>
+                        <li>Letters like "A", "H", "I", "M", "O", "T", "U", "V", "W", "X", and "Y" have vertical symmetry, meaning they remain unchanged in a water image.</li>
+                        <li>Asymmetrical objects or letters, like "B", "C", "D", and "E", will appear different in the water image.</li>
+                    </ul>
+                </div>
+                <div id="patternCompletionFormula" class="formula-box">
+                    <h4>Pattern Completion Concepts</h4>
+                    <p><strong>Pattern Completion:</strong></p>
+                    <p>Pattern Completion problems involve identifying the missing part or element of a given sequence or pattern. Common rules include:</p>                    
+                    <p><strong>Identify the Sequence:</strong> Look for a logical sequence in the pattern, whether it's numbers, letters, shapes, or symbols.</p>
+                    <ul>
+                        <li>For example, in a numerical pattern, you may need to identify a consistent difference between consecutive numbers.</li>
+                        <li>In a shape pattern, look for a consistent transformation (rotation, reflection, etc.) between successive shapes.</li>
+                    </ul>
+                    <p><strong>Consistency in Transformation:</strong> Patterns usually follow a consistent rule. Common transformations include:</p>
+                    <ul>
+                        <li><strong>Repetition:</strong> The same pattern repeats after a fixed number of elements (e.g., 1, 2, 1, 2, ...).</li>
+                        <li><strong>Rotation:</strong> The pattern may rotate by a certain degree (e.g., 90°, 180°) or move in a circular pattern.</li>
+                        <li><strong>Reflection:</strong> Shapes or symbols may be mirrored along an axis (vertical or horizontal).</li>
+                        <li><strong>Progression:</strong> The pattern may involve a mathematical or geometric progression, such as arithmetic or geometric sequences.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

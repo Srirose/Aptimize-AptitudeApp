@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bar Chart Quiz - AptiMize</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="quizstyles.css">
+  <script src="barpie.js" defer></script>  
+
+</head>
+<body>
+  <div class="header">
+    <h1 class="brand">AptiMize</h1>
+  </div>
+  <div class="quiz-container">
+    <h2>Topic: Bar Chart Analysis</h2>
+    <img id="chart-image" class="chart-img" src="" alt="Bar Chart Image" />
+    <h3 id="question-text">Loading...</h3>
+    <div id="options"></div>
+    <div class="btn-container">
+      <button id="next-btn" onclick="nextQuestion()">
+        <i class="fas fa-arrow-right"></i> Next Question
+      </button>
+    </div>
+    <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+      <i class="fas fa-check-circle"></i> Submit Quiz
+    </button>
+    <div id="score">
+      <h3>Score: <span id="score-value">0</span></h3>
+    </div>
+    <div id="time">
+      <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+    </div>
+    <div id="explanation">
+      <h3>Explanation:</h3>
+      <p id="explanation-text"></p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 AptiMize - All Rights Reserved
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+  <script>
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let startTime = Date.now();
+
+    let questions = [
+        { 
+                img: "barimg1.png",
+                question: "1) In which year did X have the highest production?",
+                options: ["1996", "1997", "1999", "2000"], 
+                answer: "1999" 
+            },
+            { 
+                img: "barimg1.png",
+                question: "2) What was the approximate total production in 1998?",
+                options: ["100 lakh tons", "90 lakh tons", "110 lakh tons", "80 lakh tons"], 
+                answer: "90 lakh tons" 
+            },
+            { 
+                img: "barimg2.png",
+                question: "3) In which year did CET applications increase the most?",
+                options: ["2000", "2001", "2002", "They remained constant"], 
+                answer: "2002" 
+            },
+            { 
+                img: "barimg2.png",
+                question: "4) What was the total number of applications in 2001?",
+                options: ["160", "170", "180", "190"], 
+                answer: "170" 
+            },
+            { 
+                img: "barimg3.png",
+                question: "5) In which academic year was the highest number of students enrolled?",
+                options: ["1993-94", "1996-97", "1997-98", "1998-99"], 
+                answer: "1997-98" 
+            },
+            { 
+                img: "barimg3.png",
+                question: "6) How many students were enrolled in 1994-95?",
+                options: ["2520", "3360", "3120", "2640"], 
+                answer: "3360" 
+            },
+            { 
+                img: "barimg4.png",
+                question: "7) In which year were the most lipsticks sold?",
+                options: ["1995", "2000", "Both years were equal", "None of these"], 
+                answer: "2000" 
+            },
+            { 
+                img: "barimg4.png",
+                question: "8) By how much did the sale of nail enamels increase between 1995 and 2000?",
+                options: ["20 lakh", "30 lakh", "31.83 lakh", "35 lakh"], 
+                answer: "31.83 lakh" 
+            },
+            { 
+                img: "barimg1.png",
+                question: "9) Which product (X, Y, Z) had the lowest production in 1997?",
+                options: ["X", "Y", "Z", "Same for all"], 
+                answer: "Y" 
+            },
+            { 
+                img: "barimg2.png",
+                question: "10) In 2002, which entrance exam had the least applicants?",
+                options: ["CAT", "XAT", "CET", "None"], 
+                answer: "CAT" 
+            },
+            { 
+                img: "barimg3.png",
+                question: "11) In which year did student enrollment decline compared to the previous year?",
+                options: ["1993-94", "1995-96", "1998-99", "1996-97"], 
+                answer: "1998-99" 
+            },
+            { 
+                img: "barimg4.png",
+                question: "12) Which product had the least sales in 2000?",
+                options: ["Shampoos", "Conditioners", "Nail Enamels", "Talcum Powder"], 
+                answer: "Conditioners" 
+            },
+            { 
+                img: "barimg1.png",
+                question: "13) What was the total production of Y in all years combined?",
+                options: ["170 lakh tons", "180 lakh tons", "190 lakh tons", "200 lakh tons"], 
+                answer: "190 lakh tons" 
+            },
+            { 
+                img: "barimg2.png",
+                question: "14) How much did the total number of applicants increase from 2000 to 2002?",
+                options: ["30", "35", "40", "45"], 
+                answer: "40" 
+            },
+            { 
+                img: "barimg3.png",
+                question: "15) What was the total student enrollment in 1996-97 and 1997-98 combined?",
+                options: ["9360", "10820", "11460", "12100"], 
+                answer: "9360" 
+            },
+            { 
+                img: "barimg4.png",
+                question: "16) How many more lipsticks were sold in 2000 compared to 1995?",
+                options: ["10 lakh", "15 lakh", "28 lakh", "25 lakh"], 
+                answer: "28 lakh" 
+            },
+            { 
+                img: "barimg1.png",
+                question: "17) What is the difference between the highest and lowest production years for Z?",
+                options: ["5 lakh tons", "10 lakh tons", "15 lakh tons", "20 lakh tons"], 
+                answer: "10 lakh tons" 
+            },
+            { 
+                img: "barimg2.png",
+                question: "18) Which entrance exam had the highest applicants in 2001?",
+                options: ["CAT", "XAT", "CET", "None"], 
+                answer: "CET" 
+            },
+            { 
+                img: "barimg3.png",
+                question: "19) What is the percentage increase in student enrollment from 1991-92 to 1997-98?",
+                options: ["50%", "75%", "90%", "100%"], 
+                answer: "90%" 
+            },
+            { 
+                img: "barimg4.png",
+                question: "20) What was the average sales of all products in 1995?",
+                options: ["10 lakh", "15 lakh", "20 lakh", "25 lakh"], 
+                answer: "15 lakh" 
+            }
+        ];
+ </script>
+</body> 
+</html>

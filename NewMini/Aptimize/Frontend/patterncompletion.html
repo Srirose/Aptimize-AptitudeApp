@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pattern Completion Quiz - AptiMize</title>
+      <link rel="stylesheet" href="quizstyles.css"> 
+    <script src="questions.js" defer></script>  
+</head>
+<body>
+
+<div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Pattern Completion</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+
+   <footer>
+        &copy; 2025 AptiMize - All Rights Reserved
+    </footer> 
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+   
+
+<script>
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let startTime = Date.now();
+
+    let questions = [
+        { question: "1) What comes next in the pattern: 2, 4, 8, 16, __?", options: ["24", "32", "18", "20"], answer: "32", explanation: "Each number is multiplied by 2. 16 x 2 = 32." },
+        { question: "2) Find the missing shape in the sequence.", options: ["Triangle", "Square", "Circle", "Pentagon"], answer: "Triangle", explanation: "The pattern repeats. After Circle, Square, next is Triangle." },
+        { question: "3) Complete the series: A, C, E, G, __?", options: ["H", "I", "J", "K"], answer: "I", explanation: "The pattern skips every other letter. G + 2 letters = I." },
+        { question: "4) Identify the missing number: 5, 10, 20, 40, __?", options: ["60", "70", "80", "90"], answer: "80", explanation: "Each number doubles. 40 x 2 = 80." },
+        { question: "5) What comes next in the pattern: 1, 4, 9, 16, __?", options: ["20", "25", "30", "36"], answer: "25", explanation: "These are squares: 1², 2², 3², 4²... next is 5² = 25." },
+        { question: "6) If a pattern follows 2, 6, 12, 20, what is the next number?", options: ["28", "30", "32", "34"], answer: "30", explanation: "The difference increases by 2: +4, +6, +8... next +10." },
+        { question: "7) If a sequence follows a pattern of doubling the previous number, what is next after 3, 6, 12, 24?", options: ["36", "40", "48", "50"], answer: "48", explanation: "Each term is double the previous: 24 x 2 = 48." },
+        { question: "8) What shape follows in the pattern: Circle, Square, Circle, Square, __?", options: ["Triangle", "Circle", "Square", "Pentagon"], answer: "Circle", explanation: "It's an alternating pattern. Next is Circle." },
+        { question: "9) Find the missing number: 100, 90, 80, __?", options: ["60", "65", "70", "75"], answer: "70", explanation: "Each number decreases by 10." },
+        { question: "10) Complete the pattern: Z, X, V, T, __?", options: ["R", "S", "U", "P"], answer: "R", explanation: "Each letter is 2 back in the alphabet: Z→X→V→T→R." },
+        { question: "11) What is the next term in the series: 11, 22, 33, __?", options: ["40", "42", "44", "55"], answer: "44", explanation: "Series increases by 11: 11, 22, 33... next is 44." },
+        { question: "12) If a pattern follows 1, 1, 2, 3, 5, what is the next term?", options: ["6", "7", "8", "9"], answer: "8", explanation: "Fibonacci sequence: next term is sum of last two: 3 + 5 = 8." },
+        { question: "13) Identify the missing shape in the sequence: Triangle, Square, Pentagon, Hexagon, __?", options: ["Octagon", "Heptagon", "Circle", "Square"], answer: "Heptagon", explanation: "Sides increase by one: 3, 4, 5, 6... next is 7 = Heptagon." },
+        { question: "14) What comes next in the pattern: 3, 6, 9, 12, __?", options: ["14", "15", "18", "21"], answer: "15", explanation: "Increase by 3: 12 + 3 = 15." },
+        { question: "15) If a clock shows 3, 6, 9, 12, what number comes next?", options: ["3", "6", "9", "12"], answer: "3", explanation: "Repeats every 12 hours: next is 3 again." },
+        { question: "16) What is the next letter in the sequence: B, D, F, H, __?", options: ["I", "J", "K", "L"], answer: "J", explanation: "Skip 1 letter in between: B(+2)=D, D(+2)=F... H(+2)=J." },
+        { question: "17) If the pattern follows: 50, 40, 30, 20, __?", options: ["5", "10", "15", "20"], answer: "10", explanation: "Decreasing by 10 each step." },
+        { question: "18) What comes next: 2, 5, 10, 17, __?", options: ["22", "24", "26", "30"], answer: "26", explanation: "Pattern: +3, +5, +7, +9... next +9 = 26." },
+        { question: "19) Complete the sequence: J, L, N, P, __?", options: ["Q", "R", "S", "T"], answer: "R", explanation: "Skipping every alternate letter: +2." },
+        { question: "20) What comes after: 144, 121, 100, 81, __?", options: ["49", "64", "36", "25"], answer: "64", explanation: "These are squares in decreasing order: 12², 11², 10²... next 8² = 64." }
+    ];
+
+    function loadQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            let q = questions[currentQuestionIndex];
+            document.getElementById("question-text").textContent = q.question;
+
+            let optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            q.options.forEach(opt => {
+                let btn = document.createElement("button");
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(opt, q.answer, q.explanation);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById("explanation").style.display = "none";
+        } else {
+            document.getElementById("submit-btn").style.display = "block";
+        }
+    }
+
+    function checkAnswer(selected, correct, explanation) {
+        let optionsDiv = document.getElementById("options");
+        let buttons = optionsDiv.getElementsByTagName("button");
+
+        for (let btn of buttons) {
+            if (btn.textContent === selected) {
+                btn.style.backgroundColor = selected === correct ? "green" : "red";
+            }
+            if (btn.textContent === correct) {
+                btn.style.backgroundColor = "green";
+            }
+            btn.disabled = true;
+        }
+
+        if (selected === correct) {
+            score++;
+        }
+
+        document.getElementById("explanation-text").textContent = explanation;
+        document.getElementById("explanation").style.display = "block";
+
+        currentQuestionIndex++;
+        setTimeout(() => {
+            document.getElementById("explanation").style.display = "none";
+            loadQuestion();
+        }, 2000);
+    }
+
+    function submitQuiz() {
+        totalTime = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById("score").style.display = "block";
+        document.getElementById("score-value").textContent = score + "/" + questions.length;
+        document.getElementById("time").style.display = "block";
+        document.getElementById("time-value").textContent = totalTime;
+
+        let userScores = JSON.parse(localStorage.getItem("userScores")) || {};
+        userScores["PatternCompletion"] = score;
+        localStorage.setItem("userScores", JSON.stringify(userScores));
+
+        setTimeout(() => {
+            window.location.href = "scoreboard.html";
+        }, 3000);
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>

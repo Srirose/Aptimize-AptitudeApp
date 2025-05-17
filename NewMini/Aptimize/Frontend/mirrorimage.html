@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror Image Quiz - AptiMize</title>
+        <link rel="stylesheet" href="quizstyles.css"> 
+    <script src="questions.js" defer></script> 
+</head>
+<body>
+
+  <div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Mirror Images</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+
+   <footer>
+        &copy; 2025 AptiMize - All Rights Reserved
+    </footer> 
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+   
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let startTime = Date.now();
+        let questions = [
+            { question: "1) If the mirror is placed vertically to the right of 'A', how will it appear?", options: ["Same as A", "Reversed", "Flipped upside down", "No change"], answer: "Reversed" },
+            { question: "2) What will be the mirror image of 'B'?", options: ["Looks same", "Horizontally flipped", "Upside-down", "Unchanged"], answer: "Horizontally flipped" },
+            { question: "3) Which number looks the same in the mirror?", options: ["3", "8", "6", "5"], answer: "8" },
+            { question: "4) What happens to the letter 'E' in a mirror?", options: ["No change", "Upside-down", "Reversed", "Rotated 90°"], answer: "Reversed" },
+            { question: "5) If '1234' is held in front of a mirror, what will you see?", options: ["4321", "3412", "1234", "2143"], answer: "4321" },
+            { question: "6) The mirror image of 'MIRROR' is?", options: ["MIRROR", "ЯЯIMOR", "RЯIMIR", "RIMЯЯO"], answer: "RЯIMIR" },
+            { question: "7) Which number remains unchanged in a mirror?", options: ["2", "5", "8", "7"], answer: "8" },
+            { question: "8) How will the letter 'N' appear in a mirror?", options: ["Same", "Flipped", "Upside-down", "Distorted"], answer: "Flipped" },
+            { question: "9) What is the mirror image of '2025'?", options: ["5202", "2520", "5052", "2025"], answer: "5202" },
+            { question: "10) The mirror image of 'L' is?", options: ["7", "⊥", "L", "T"], answer: "⊥" },
+            { question: "11) If a digital clock shows 12:45, what will be its mirror image?", options: ["12:45", "54:21", "45:12", "51:21"], answer: "51:21" },
+            { question: "12) What will be the mirror image of 'CAT'?", options: ["TAC", "ƆAΓ", "ТАƆ", "AƆT"], answer: "ƆAΓ" },
+            { question: "13) A triangle with base down is placed before a mirror, what happens?", options: ["Upside-down", "Flipped horizontally", "No change", "Distorted"], answer: "Flipped horizontally" },
+            { question: "14) The mirror image of 'E' will look like?", options: ["3", "E", "W", "F"], answer: "3" },
+            { question: "15) The mirror image of 'LOVE' is?", options: ["ɘΛOI", "3OV3", "EVOƆ", "V3OL"], answer: "ɘΛOI" },
+            { question: "16) What will be the mirror image of '911'?", options: ["116", "119", "911", "611"], answer: "116" },
+            { question: "17) A car number plate reads '7997', what will its mirror image be?", options: ["7997", "9779", "7997 mirrored", "6996"], answer: "7997" },
+            { question: "18) The mirror image of 'X' is?", options: ["X", "V", "Z", "Y"], answer: "X" },
+            { question: "19) What is the mirror image of the number '505'?", options: ["505", "252", "606", "5O5"], answer: "505" },
+            { question: "20) If 'P' is placed before a mirror, how will it look?", options: ["q", "d", "b", "P"], answer: "q" }
+        ];
+
+       
+    </script>
+</body>
+</html>

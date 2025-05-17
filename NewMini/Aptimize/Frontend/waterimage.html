@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Image Quiz - AptiMize</title>
+       <link rel="stylesheet" href="quizstyles.css"> 
+    <script src="questions.js" defer></script>  
+</head>
+<body>
+
+ <div class="header">
+        <h1 class="brand">AptiMize</h1>
+    </div>
+    <div class="quiz-container">
+        <h2>Topic: Water Images</h2>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options"></div>
+        <div class="btn-container">
+            <button id="next-btn" onclick="nextQuestion()">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+        </div>
+        <button id="submit-btn" onclick="submitQuiz()" style="display: none;">
+            <i class="fas fa-check-circle"></i> Submit Quiz
+        </button>
+        <div id="score">
+            <h3>Score: <span id="score-value">0</span></h3>
+        </div>
+        <div id="time">
+            <h3>Time Taken: <span id="time-value">0</span> seconds</h3>
+        </div>
+        <div id="explanation">
+            <h3>Explanation:</h3>
+            <p id="explanation-text"></p>
+        </div>
+    </div>
+
+   <footer>
+        &copy; 2025 AptiMize - All Rights Reserved
+    </footer> 
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+   
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let startTime = Date.now();
+        let questions = [
+            { question: "1) If a mirror is placed below the letter 'A', how will it appear?", options: ["Same as A", "Upside-down", "Flipped horizontally", "No change"], answer: "Upside-down", explanation: "A water image is a reflection across a horizontal axis. Therefore, 'A' will appear upside-down." },
+            { question: "2) What will be the water image of 'M'?", options: ["Looks same", "Upside-down", "Reversed", "Distorted"], answer: "Looks same", explanation: "Letters like 'M' that have vertical symmetry appear the same in a water reflection." },
+            { question: "3) Which number remains unchanged in a water reflection?", options: ["0", "8", "3", "5"], answer: "8", explanation: "The number '8' has horizontal symmetry, so its water reflection looks the same." },
+            { question: "4) What happens to the letter 'E' in a water image?", options: ["No change", "Flipped upside-down", "Reversed", "Rotated 90°"], answer: "Flipped upside-down", explanation: "The water image of 'E' is its upside-down version." },
+            { question: "5) If '1234' is placed above water, what will you see?", options: ["4321", "1234", "3412", "ʎƐᄅ"], answer: "ʎƐᄅ", explanation: "Each digit is reflected upside-down: 1 becomes Ɩ, 2 becomes ᄅ, 3 becomes Ɛ, and 4 becomes ʎ." },
+            { question: "6) The water image of 'MIRROR' is?", options: ["MIRROR", "ʍᴉɹɹoɹ", "ɹoɹɹᴉɯ", "ʁɹᴉɯᴚ"], answer: "ɹoɹɹᴉɯ", explanation: "Each letter of 'MIRROR' is reflected upside-down to form its water image." },
+            { question: "7) The number '6' in water image will look like?", options: ["6", "9", "8", "3"], answer: "9", explanation: "The water reflection of '6' is '9'." },
+            { question: "8) How will the letter 'T' appear in water reflection?", options: ["Same", "Flipped horizontally", "Upside-down", "Distorted"], answer: "Same", explanation: "The letter 'T' has horizontal symmetry, so its water reflection looks the same." },
+            { question: "9) What is the water image of '2025'?", options: ["5202", "2025", "2520", "Ɩɔɔ"], answer: "5202", explanation: "Each digit is reflected upside-down: 2 becomes 5, 0 remains 0, and 5 becomes 2." },
+            { question: "10) The water image of 'L' is?", options: ["L", "7", "T", "⊥"], answer: "⊥", explanation: "The water reflection of 'L' is '⊥'." },
+            { question: "11) If a digital clock shows 12:45, what will be its water image?", options: ["12:45", "45:12", "54:21", "ƖƐ:ᄅ"], answer: "45:12", explanation: "Reflecting each digit upside-down: 1 becomes 1, 2 becomes 5, 4 becomes 4, and 5 becomes 2." },
+            { question: "12) What will be the water image of 'CAT'?", options: ["ƆAΓ", "ТАƆ", "TAC", "ΓƆA"], answer: "ΓƆA", explanation: "Each letter is reflected upside-down: C becomes Ɔ, A becomes A, and T becomes Γ." },
+            { question: "13) A triangle with base down is placed above water, what happens?", options: ["Upside-down", "Flipped horizontally", "No change", "Distorted"], answer: "Upside-down", explanation: "Reflecting a shape across a horizontal axis inverts it vertically." },
+            { question: "14) The water image of 'E' will look like?", options: ["3", "E", "W", "F"], answer: "F", explanation: "The water reflection of 'E' is 'F'." },
+            { question: "15) The water image of 'LOVE' is?", options: ["ɘΛOI", "3OV3", "ƎΛO⅂", "ƆVOƐ"], answer: "ƎΛO⅂", explanation: "Each letter is reflected upside-down: L becomes Ǝ, O becomes O, V becomes Λ, and E becomes ⅂." },
+            { question: "16) What will be the water image of '911'?", options: ["116", "119", "911", "ƖƖ9"], answer: "ƖƖ9", explanation: "The water reflection of '9' is '6', and '1' remains '1'." },
+            { question: "17) A car number plate reads '7997', what will its water image be?", options: ["7997", "ƖƖƖƖ", "6996", "9779"], answer: "6996", explanation: "The water reflection of '7' is 'L' (which looks like an inverted 7), and '9' becomes '6'." },
+            { question: "18) The water image of 'X' is?", options: ["X", "V", "Z", "Y"], answer: "X", explanation: "The letter 'X' has horizontal symmetry, so its water reflection looks the same." },
+            { question: "19) What is the water image of the number '505'?", options: ["505", "252", "606", "ƖOƖ"], answer: "ƖOƖ", explanation: "The water reflection of '5' is '2', and '0' remains '0'." },
+            { question: "20) If 'P' is placed above water, how will it look?", options: ["q", "d", "b", "ɟ"], answer: "d", explanation: "The water reflection of 'P' is 'd'." }
+        ];
+
+        function loadQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                let q = questions[currentQuestionIndex];
+                document.getElementById("question-text").textContent = q.question;
+
+                let optionsDiv = document.getElementById("options");
+                optionsDiv.innerHTML = "";
+                q.options.forEach(opt => {
+                    let btn = document.createElement("button");
+                    btn.textContent = opt;
+                    btn.onclick = () => checkAnswer(opt, q.answer, q.explanation);
+                    optionsDiv.appendChild(btn);
+                });
+
+                // Hide previous explanation
+                document.getElementById("explanation").style.display = "none";
+            } else {
+                document.getElementById("submit-btn").style.display = "block";
+            }
+        }
+
+        function checkAnswer(selected, correct, explanation) {
+            let optionsDiv = document.getElementById("options");
+            let buttons = optionsDiv.getElementsByTagName("button");
+
+            for (let btn of buttons) {
+                if (btn.textContent === selected) {
+                    if (selected === correct) {
+                        btn.style.backgroundColor = "green"; // Correct Answer: Green
+                    } else {
+                        btn.style.backgroundColor = "red"; // Wrong Answer: Red
+                    }
+                }
+
+                // Highlight correct answer in green
+                if (btn.textContent === correct) {
+                    btn.style.backgroundColor = "green";
+                }
+
+                // Disable all buttons to prevent multiple clicks
+                btn.disabled = true;
+            }
+
+            if (selected === correct) {
+                score++;
+            }
+
+            // Display explanation
+            document.getElementById("explanation-text").textContent = explanation;
+            document.getElementById("explanation").style.display = "block";
+
+            currentQuestionIndex++;
+
+            // Wait 2 seconds before loading the next question
+            setTimeout(loadQuestion, 2000);
+        }
+
+        function startConfetti() {
+            const duration = 3 * 1000; // Confetti duration (3 seconds)
+            const end = Date.now() + duration;
+            const colors = ["#bb0000", "#ffffff", "#44ff00", "#0082ff"];
+
+            function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: Math.random(), y: 0 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }
+
+            frame();
+        }
+
+        function submitQuiz() {
+            totalTime = Math.floor((Date.now() - startTime) / 1000); // Calculate time in seconds
+            document.getElementById("score").style.display = "block";
+            document.getElementById("score-value").textContent = score + "/" + questions.length;
+            document.getElementById("time").style.display = "block";
+            document.getElementById("time-value").textContent = totalTime;
+            document.getElementById("explanation").style.display = "none"; // Hide explanation on submit
+
+            let userScores = JSON.parse(localStorage.getItem("userScores")) || {};
+            userScores["WaterImage"] = score; // Save Train quiz score
+            localStorage.setItem("userScores", JSON.stringify(userScores));
+
+            // Redirect after 3 seconds
+            setTimeout(() => {
+                window.location.href = "scoreboard.html"; // Redirect to score page
+            }, 3000);
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
